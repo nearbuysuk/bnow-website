@@ -1,0 +1,17 @@
+{
+  "name": "bnow-website",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BNow static website for local retail map discovery, reservations, and legal documentation.",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "start": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro"
+  },
+  "dependencies": {
+    "astro": "^5.1.0"
+  }
+}

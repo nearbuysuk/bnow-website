@@ -1,0 +1,610 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site';
+import { withBase } from '../utils/paths';
+
+const legalDocs = (await getCollection('legals')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<BaseLayout>
+  <!-- Hero Section (Retailer-First B2B Overview) -->
+  <section class="section hero-section">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="badge-row">
+          <span class="badge">
+            <span class="status-dot" aria-hidden="true"></span>
+            {siteConfig.statusBadge}
+          </span>
+          <span class="badge badge-amber">{siteConfig.hero.eyebrow}</span>
+        </div>
+
+        <h1 class="hero-title">{siteConfig.hero.headline}</h1>
+        <p class="hero-lead">{siteConfig.hero.subheadline}</p>
+
+        <div class="btn-group hero-actions">
+          <a
+            class="btn btn-primary"
+            href={`mailto:${siteConfig.contactEmail}?subject=BNow%20Retailer%20Pilot%20Interest`}
+          >
+            {siteConfig.hero.primaryActionLabel}
+          </a>
+          <a class="btn btn-secondary" href="#how-it-works">
+            {siteConfig.hero.secondaryActionLabel}
+          </a>
+        </div>
+
+        <p class="dev-notice">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+          <span>{siteConfig.hero.developmentNote}</span>
+        </p>
+      </div>
+
+      <!-- Pure HTML/CSS Interactive-Style Map & Reservation Preview Diagram -->
+      <figure class="map-preview-card" aria-label="Illustration of local map discovery and product reservation card">
+        <div class="map-canvas" aria-hidden="true">
+          <div class="map-grid-lines"></div>
+          <div class="map-radius-ring"></div>
+
+          <!-- Nearby Store Pins -->
+          <div class="map-pin pin-secondary" style="inset-block-start: 22%; inset-inline-start: 20%;">
+            <span class="pin-dot"></span>
+            <span class="pin-label">Hardware Co. · 0.4 mi</span>
+          </div>
+
+          <div class="map-pin pin-primary" style="inset-block-start: 38%; inset-inline-start: 48%;">
+            <span class="pin-dot"></span>
+            <span class="pin-label">Grove Street Bike &amp; Repair · In Stock</span>
+          </div>
+
+          <div class="map-pin pin-secondary" style="inset-block-start: 68%; inset-inline-start: 28%;">
+            <span class="pin-dot"></span>
+            <span class="pin-label">Corner Apothecary · 3 slots today</span>
+          </div>
+        </div>
+
+        <!-- Simulated Merchant Reservation Card -->
+        <div class="reservation-sheet">
+          <div class="sheet-header">
+            <div>
+              <span class="sheet-eyebrow">Live Storefront Listing</span>
+              <h2 class="sheet-title">Grove Street Bike &amp; Repair</h2>
+            </div>
+            <span class="badge">0.3 mi away</span>
+          </div>
+
+          <ul class="inventory-preview-list">
+            <li class="inventory-item">
+              <div>
+                <strong>Commuter Helmet (Matte Slate, M)</strong>
+                <span class="inventory-meta">Physical Product · 4 in stock on floor</span>
+              </div>
+              <span class="reserve-pill">Reserve (2h Hold)</span>
+            </li>
+            <li class="inventory-item">
+              <div>
+                <strong>Same-Day Brake Tune-Up</strong>
+                <span class="inventory-meta">Local Service · Next slot 2:30 PM</span>
+              </div>
+              <span class="reserve-pill">Book Slot</span>
+            </li>
+          </ul>
+        </div>
+        <figcaption class="sr-caption">
+          How local retailers appear to nearby consumers searching the BNow map for products and services.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Explainer Section: How BNow Works -->
+  <section id="how-it-works" class="section section-subtle section-deferred">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge">How It Works</span>
+        <h2 style="margin-block-start: 0.75rem;">
+          From Shelf to Local Map to In-Store Pickup in Three Steps
+        </h2>
+        <p>
+          BNow bridges the gap between online local search and brick-and-mortar retail—giving shoppers certainty before they travel and giving merchants high-intent foot traffic.
+        </p>
+      </div>
+
+      <div class="card-grid-3">
+        {
+          siteConfig.explainerSteps.map((step) => (
+            <article class="aligned-card step-card">
+              <div class="step-card-top">
+                <span class="step-number">{step.stepNumber}</span>
+                <span class="badge">{step.badge}</span>
+              </div>
+              <h3>{step.title}</h3>
+              <div class="step-body">
+                <p>{step.description}</p>
+                <ul class="step-highlights">
+                  {step.highlights.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Retailer Benefits Section -->
+  <section id="for-retailers" class="section section-deferred">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge">Why Local Retailers Partner With BNow</span>
+        <h2 style="margin-block-start: 0.75rem;">
+          Built for Physical Storefronts, Not Warehouse Fulfillment
+        </h2>
+        <p>
+          Traditional e-commerce forces local shops to compete on shipping speed and packaging costs. BNow turns your physical proximity into your greatest advantage.
+        </p>
+      </div>
+
+      <div class="card-grid-2">
+        {
+          siteConfig.retailerBenefits.map((benefit) => (
+            <article class="aligned-card">
+              <div>
+                <span class="badge badge-amber">{benefit.tag}</span>
+              </div>
+              <h3>{benefit.title}</h3>
+              <p>{benefit.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-Sided Ecosystem Section (Retailers & Consumers) -->
+  <section id="ecosystem" class="section section-subtle section-deferred">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge">Platform Ecosystem</span>
+        <h2 style="margin-block-start: 0.75rem;">
+          Designed for Both Sides of the Local Counter
+        </h2>
+        <p>
+          While our pre-launch focus is onboarding retail partners, BNow is engineered so both merchants and local shoppers experience a fast, frictionless workflow.
+        </p>
+      </div>
+
+      <div class="card-grid-2">
+        <article class="ecosystem-panel">
+          <div class="panel-header">
+            <span class="badge">For Local Retailers &amp; Service Providers</span>
+            <h3 style="margin-block-start: 0.5rem;">Your Storefront on the Local Map</h3>
+          </div>
+          <dl class="feature-dl">
+            <div>
+              <dt>Inventory &amp; Service Control</dt>
+              <dd>Publish products, quantities, and bookable service slots with customizable hold windows.</dd>
+            </div>
+            <div>
+              <dt>One-Tap Hold Confirmation</dt>
+              <dd>Verify item availability on the shelf and confirm consumer holds in seconds.</dd>
+            </div>
+            <div>
+              <dt>Direct In-Store Relationship</dt>
+              <dd>Customers visit your store in person, completing checkout at your counter and discovering additional items.</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="ecosystem-panel">
+          <div class="panel-header">
+            <span class="badge badge-amber">For Nearby Consumers</span>
+            <h3 style="margin-block-start: 0.5rem;">Search, Locate &amp; Reserve Nearby</h3>
+          </div>
+          <dl class="feature-dl">
+            <div>
+              <dt>Real-Time Map Search</dt>
+              <dd>Search by product name, category, or service and view verified local stock on an interactive map.</dd>
+            </div>
+            <div>
+              <dt>Guaranteed In-Store Hold</dt>
+              <dd>Reserve the item before leaving home so you never make a wasted trip across town.</dd>
+            </div>
+            <div>
+              <dt>Privacy-First Location Discovery</dt>
+              <dd>Foreground-only map searches with zero background tracking or third-party data brokerage.</dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ / Quick Disclosures using Native <details> (Zero JS) -->
+  <section class="section section-deferred">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge">Common Questions</span>
+        <h2 style="margin-block-start: 0.75rem;">
+          Frequently Asked Questions for Retail Partners
+        </h2>
+      </div>
+
+      <div class="faq-stack">
+        <details class="faq-item" name="retailer-faq" open>
+          <summary>When will the BNow mobile app launch on the App Store and Google Play?</summary>
+          <div class="faq-content">
+            <p>
+              BNow is currently in active development. We are onboarding initial local retail and service partners first so that launching neighborhoods have rich, accurate local inventory from day one.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="retailer-faq">
+          <summary>Can service-based businesses list alongside product retailers?</summary>
+          <div class="faq-content">
+            <p>
+              Yes. BNow supports both physical retail inventory (with quantity holds) and local services (such as repairs, consultations, or in-store appointments) on the same discovery map.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="retailer-faq">
+          <summary>Do retailers need to ship products to consumers?</summary>
+          <div class="faq-content">
+            <p>
+              No. BNow is strictly focused on local discovery and in-store reservations. Consumers reserve through the app and visit your physical location to pick up their product or attend their service slot.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="retailer-faq">
+          <summary>Where can I review BNow's legal, privacy, and merchant terms?</summary>
+          <div class="faq-content">
+            <p>
+              All platform policies—including our <a href={withBase('/legals/privacy-policy/')}>Privacy Policy</a>, <a href={withBase('/legals/terms-of-service/')}>Terms of Service</a>, and <a href={withBase('/legals/retailer-terms/')}>Retailer &amp; Merchant Terms</a>—are publicly available in our <a href={withBase('/legals/')}>Legal Hub</a>.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Legal Transparency & Pilot CTA Banner -->
+  <section class="section section-subtle section-deferred">
+    <div class="container">
+      <div class="cta-banner">
+        <div>
+          <span class="badge">Early Retailer Pilot</span>
+          <h2 style="margin-block-start: 0.75rem;">
+            Interested in Listing Your Storefront on BNow?
+          </h2>
+          <p style="margin-block-start: 0.5rem; max-inline-size: 40rem;">
+            Get in touch with our team to learn about our pilot rollout, or review our transparent platform policies and merchant terms.
+          </p>
+        </div>
+
+        <div class="btn-group">
+          <a
+            class="btn btn-primary"
+            href={`mailto:${siteConfig.contactEmail}?subject=BNow%20Retailer%20Pilot%20Inquiry`}
+          >
+            Contact Retailer Onboarding
+          </a>
+          <a class="btn btn-secondary" href={withBase('/legals/')}>
+            View Legal Hub ({legalDocs.length} Policies)
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-section {
+    padding-block: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-wrap: balance;
+    gap: 0.5rem;
+    margin-block-end: var(--space-md);
+  }
+
+  .hero-title {
+    margin-block-end: var(--space-md);
+  }
+
+  .hero-lead {
+    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.2rem);
+    margin-block-end: var(--space-lg);
+  }
+
+  .hero-actions {
+    margin-block-end: var(--space-md);
+  }
+
+  .dev-notice {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    background-color: var(--color-bg-subtle);
+    border: 1px solid var(--color-border-subtle);
+    padding-block: 0.65rem;
+    padding-inline: 0.9rem;
+    border-radius: var(--radius-md);
+  }
+
+  .dev-notice svg {
+    flex-shrink: 0;
+    margin-block-start: 0.15rem;
+    color: var(--color-brand-primary);
+  }
+
+  /* Map Preview Mockup Card */
+  .map-preview-card {
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: clip;
+  }
+
+  .map-canvas {
+    position: relative;
+    block-size: 15.5rem;
+    background:
+      radial-gradient(circle at 52% 45%, var(--color-brand-soft) 0%, transparent 65%),
+      var(--color-bg-subtle);
+    border-block-end: 1px solid var(--color-border-subtle);
+    overflow: clip;
+  }
+
+  .map-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--color-border-subtle) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 2.5rem 2.5rem;
+    opacity: 0.65;
+  }
+
+  .map-radius-ring {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 52%;
+    inline-size: 13rem;
+    block-size: 13rem;
+    transform: translate(-50%, -50%);
+    border-radius: var(--radius-pill);
+    border: 1.5px dashed var(--color-brand-primary);
+    background-color: color-mix(in srgb, var(--color-brand-primary) 7%, transparent);
+  }
+
+  .map-pin {
+    position: absolute;
+    display: inline-flex;
+    align-items: safe center;
+    gap: 0.4rem;
+    padding-block: 0.3rem;
+    padding-inline: 0.65rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 650;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+  }
+
+  .pin-primary {
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-on-brand);
+  }
+
+  .pin-secondary {
+    background-color: var(--color-surface-card);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-strong);
+  }
+
+  .pin-dot {
+    inline-size: 0.45rem;
+    block-size: 0.45rem;
+    border-radius: var(--radius-pill);
+    background-color: currentColor;
+  }
+
+  .reservation-sheet {
+    padding: var(--space-md);
+  }
+
+  .sheet-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: safe center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    margin-block-end: var(--space-sm);
+  }
+
+  .sheet-eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-brand-primary);
+  }
+
+  .sheet-title {
+    font-size: 1.1rem;
+  }
+
+  .inventory-preview-list {
+    list-style: none;
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .inventory-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: safe center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-block: 0.75rem;
+  }
+
+  .inventory-item:not(:last-child) {
+    border-block-end: 1px solid var(--color-border-subtle);
+  }
+
+  .inventory-item strong {
+    display: block;
+    font-size: 0.92rem;
+    color: var(--color-text-primary);
+  }
+
+  .inventory-meta {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .reserve-pill {
+    font-size: 0.78rem;
+    font-weight: 650;
+    padding-block: 0.25rem;
+    padding-inline: 0.65rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-brand-soft);
+    color: var(--color-brand-primary);
+    border: 1px solid var(--color-brand-border);
+  }
+
+  .sr-caption {
+    padding-block: 0.5rem;
+    padding-inline: var(--space-md);
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    background-color: var(--color-bg-subtle);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  /* Explainer Cards */
+  .step-card-top {
+    display: flex;
+    align-items: safe center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+  }
+
+  .step-number {
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--color-brand-primary);
+  }
+
+  .step-highlights {
+    margin-block-start: var(--space-sm);
+    padding-inline-start: 1.15rem;
+    font-size: 0.92rem;
+    color: var(--color-text-secondary);
+  }
+
+  .step-highlights li:not(:last-child) {
+    margin-block-end: 0.35rem;
+  }
+
+  /* Ecosystem Panels */
+  .ecosystem-panel {
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .panel-header {
+    margin-block-end: var(--space-md);
+    padding-block-end: var(--space-sm);
+    border-block-end: 1px solid var(--color-border-subtle);
+  }
+
+  .feature-dl > div:not(:last-child) {
+    margin-block-end: var(--space-md);
+  }
+
+  .feature-dl dt {
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-block-end: 0.2rem;
+  }
+
+  .feature-dl dd {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+  }
+
+  /* Native Accordion FAQ */
+  .faq-stack {
+    max-inline-size: var(--max-inline-prose);
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .faq-item {
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    padding-inline: var(--space-md);
+  }
+
+  .faq-item summary {
+    padding-block: 1rem;
+    font-weight: 650;
+    color: var(--color-text-primary);
+    cursor: pointer;
+  }
+
+  .faq-content {
+    padding-block-end: 1rem;
+    border-block-start: 1px solid var(--color-border-subtle);
+    padding-block-start: 0.75rem;
+  }
+
+  /* CTA Banner */
+  .cta-banner {
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: safe center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+  }
+</style>
+
