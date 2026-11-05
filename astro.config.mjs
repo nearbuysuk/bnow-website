@@ -1,9 +1,9 @@
 import { defineConfig } from 'astro/config';
 
-// Supports both root domain deployment (e.g., https://bnow.app) and
-// GitHub Pages repository subpath deployment (e.g., https://username.github.io/bnow-website)
-// Automatically configured via GITHUB_REPOSITORY / SITE_URL in GitHub Actions if not overridden.
-const site = process.env.SITE_URL || 'https://bnow.example.com';
+// Configured for custom subdomain https://nbuy.ourtech.app on GitHub Pages.
+// Explicitly setting `site` and `base: '/'` ensures `withastro/action` builds
+// for the root of the custom subdomain rather than a repository subpath.
+const site = process.env.SITE_URL || 'https://nbuy.ourtech.app';
 const base = process.env.BASE_PATH || '/';
 
 export default defineConfig({
@@ -15,4 +15,3 @@ export default defineConfig({
     format: 'directory',
   },
 });
-
